@@ -1,0 +1,58 @@
+var Painter = (function () {
+
+    /** @constructor */
+    var Painter = function(canvas) {
+        this.canvas = canvas;
+        this.context = canvas.getContext("2d");
+
+        this.lines = [];
+
+        this.defaultLineWidth = 1;
+        this.defaultStrokeStyle = "black";
+    };
+
+
+    Painter.prototype.addLine = function(line) {
+        this.lines.push(line);
+    };
+
+    Painter.prototype.draw = function() {
+        var clearCanvas = function (self) {
+            var canvas = self.canvas;
+            self.context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        clearCanvas(this);
+
+        this._drawLines();
+        this.lines = [];
+    };
+
+
+    Painter.prototype._drawLine = function(p1, p2, lineWidth, strokeStyle) {
+        var ctx = this.context;
+
+        ctx.beginPath();
+
+        ctx.lineWidth = lineWidth || this.defaultLineWidth;
+        ctx.strokeStyle = strokeStyle || this.defaultStrokeStyle;
+
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+
+        ctx.stroke();
+    };
+
+
+    Painter.prototype._drawLines = function() {
+        var lines = this.lines;
+
+        for (var i = 0; i < lines.length; i += 1) {
+            var line = lines[i];
+            this._drawLine(line.p1, line.p2, line.width, line.color);
+        }
+    };
+
+
+    return Painter;
+})();
