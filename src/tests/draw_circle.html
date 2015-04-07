@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Fuzzy Car</title>
+
+    <!-- Load scripts -->
+    <script src="../scripts/view/painter.js"></script>
+</head>
+<body>
+<canvas id="car-canvas" height="500"></canvas>
+
+<script>
+    var canvas = document.getElementById("car-canvas");
+    var painter = new Painter(canvas);
+
+    var circle = {};
+    circle.center = {x:100, y:100};
+    circle.radius = 80;
+
+    painter.addCircle(circle);
+
+    painter.draw();
+</script>
+</body>
+</html>
