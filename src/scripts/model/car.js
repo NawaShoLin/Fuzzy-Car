@@ -77,4 +77,10 @@ var Car = function(position, phi, speed, carLength) {
     this.carLength = function() {
         return carLength;
     };
+
+    this.clone = function() {
+        var c_pos = Position(position.x, position.y);
+        var c_phi = phi;
+        return new Car(c_pos, c_phi, speed, carLength);
+    };
 };

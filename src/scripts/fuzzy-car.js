@@ -1,4 +1,4 @@
-var FuzzyCar = function(painter, window) {
+var FuzzyCar = function(painter, window, historyMod) {
     var defaultCar = function() {
         return new Car();
     };
@@ -34,14 +34,28 @@ var FuzzyCar = function(painter, window) {
 
     var drive = Drive(leftSensor, centerSensor, rightSensor);
 
+    historyMod = historyMod || false;
+    var histroyCars = [];
+
+    var drawHistoryCars = function() {
+        histroyCars.forEach(function(h_car){
+            painter.addCar(h_car);
+        });
+    };
+
     var update = function() {
-        //car.move(MathHelper.degToRad(20));
+        histroyCars.push(car.clone());
         car.move(drive());
     };
 
     var draw = function() {
         painter.addEnv(env);
         painter.addCar(car);
+
+        if (historyMod) {
+            drawHistoryCars();
+        }
+
         painter.draw();
     };
 
