@@ -73,4 +73,8 @@ var Car = function(position, phi, speed, carLength) {
     this.phi = function() {
         return phi;
     };
+
+    this.carLength = function() {
+        return carLength;
+    };
 };

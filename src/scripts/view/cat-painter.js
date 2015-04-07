@@ -40,11 +40,12 @@ var CatPainter = function(canvas) {
         var pos = car.position();
         var phi = car.phi();
 
-        addCircle({center:pos, radius:3});
+        var r = car.carLength() / 2;
+        addCircle({ center:pos, radius: r });
 
         var frontLine = {
             p1: pos,
-            p2: Position(pos.x + Math.cos(phi) * 3, pos.y + Math.sin(phi) * 3)
+            p2: Position(pos.x + Math.cos(phi) * r, pos.y + Math.sin(phi) * r)
         };
 
         addLine(frontLine);
