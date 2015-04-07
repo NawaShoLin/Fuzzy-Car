@@ -1,5 +1,5 @@
 /**
- * @return {float} - distance to closest bar, null if not found
+ * @return {number} - distance to closest bar, null if not found
  */
 var senseEnv = function(pos, phi, env) {
     var ray = new Ray(pos, phi);
@@ -31,11 +31,11 @@ var senseEnv = function(pos, phi, env) {
 /**
  * @param {object} car  - the car
  * @param {object} env - the environment
- * @param {float} alpha - the radian between sensor and car front
+ * @param {number} alpha - the radian between sensor and car front
  */
 var Sensor = function(car, env, alpha) {
     /**
-     * @return {float} - distance to closest bar, null if not found
+     * @return {number} - distance to closest bar, null if not found
      */
     this.distToBar = function() {
         return senseEnv(car.position(), car.phi() + alpha, env);
