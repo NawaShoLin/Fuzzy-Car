@@ -63,15 +63,15 @@ var Line = function(startPoint, endPoint) {
 };
 
 var Ray = function(point, rad) {
-    var myLine = MathHelper.EquationByPointAndRad(point, rad);
+    var myEquation = MathHelper.EquationByPointAndRad(point, rad);
 
     this.crossoverPoint = function(otherLine) {
-        var cPoint = myLine.equation.crossoverPoint(otherLine.equation);
+        var cPoint = myEquation.crossoverPoint(otherLine.equation);
         if (!cPoint || !otherLine.isOnLine(cPoint)) {
             return null;
         }
 
-        var myVector = [Math.sin(rad), Math.cos(rad)];
+        var myVector = [Math.cos(rad), Math.sin(rad)];
         var toCPVector = [cPoint.x - point.x, cPoint.y - point.y];
 
         if (MathHelper.DotProduct(myVector, toCPVector) > 0) {
@@ -104,6 +104,12 @@ var MathHelper = (function() {
             sum += vector1[i] * vector2[i];
         }
         return sum;
+    };
+
+    MathHelper.Distance = function(p1, p2) {
+        var x_diff = p1.x - p2.x;
+        var y_diff = p1.y - p2.y;
+        return Math.sqrt(x_diff * x_diff + y_diff * y_diff);
     };
 
     return MathHelper;
