@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Fuzzy Car</title>
+
+    <!-- Load scripts -->
+    <script src="scripts/view/painter.js"></script>
+    <script src="scripts/view/cat-painter.js"></script>
+    <script src="scripts/model/car.js"></script>
+    <script src="scripts/model/environment.js"></script>
+    <script src="scripts/model/math-lib.js"></script>
+    <script src="scripts/model/position.js"></script>
+    <script src="scripts/fuzzy-car.js"></script>
+</head>
+<body>
+<canvas id="car-canvas" width="1280" height="720"></canvas>
+
+<script>
+    var canvas = document.getElementById("car-canvas");
+    var painter = new CatPainter(canvas);
+    var app = new FuzzyCar(painter, window);
+    app.run();
+</script>
+</body>
+</html>
