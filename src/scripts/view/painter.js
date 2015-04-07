@@ -85,6 +85,14 @@ var Painter = (function () {
         }
     };
 
+    Painter.prototype.Height = function() {
+        return this.canvas.height;
+    };
+
+    Painter.prototype.Width = function() {
+        return this.canvas.width;
+    };
+
 
     return Painter;
 })();

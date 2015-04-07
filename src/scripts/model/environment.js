@@ -1,7 +1,7 @@
-var Environment = function(lines) {
-    this.lines = lines || [];
+var Environment = function(walls) {
+    this.walls = walls || [];
 
-    this.addLine = function(line) {
-        lines.push(line);
+    this.addWall = function(wall) {
+        this.walls.push(wall);
     };
 };
