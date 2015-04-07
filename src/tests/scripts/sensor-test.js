@@ -8,12 +8,12 @@ QUnit.test("Sensor Test", function(assert) {
     var PI = Math.PI;
 
 
-    var senseResult = senseEnv(Position(0,0), PI, env);
+    var senseResult = senseEnv(Position(0,0), 0, env);
     assert.ok(Math.abs(senseResult - 3) < OK_ERR, "Dist:" + senseResult);
 
     var xm3_line = new Line(Position(-3, -100), Position(-3, 100));
     env = new Environment([xm3_line, x4_line]);
-    senseResult = senseEnv(Position(0,0), PI, env);
+    senseResult = senseEnv(Position(0,0), 0, env);
     assert.ok(Math.abs(senseResult - 4) < OK_ERR, "Dist:" + senseResult);
 
     var y1_line = new Line(Position(100, 1), Position(-100, 1));
