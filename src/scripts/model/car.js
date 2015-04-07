@@ -43,10 +43,7 @@ var Car = function(position, phi, speed, carLength) {
     };
 
     var thresholdPhi = function(phi) {
-        var min = MathHelper.degToRad(-90);
-        var max = MathHelper.degToRad(270);
-
-        return thresholdValue(phi, min, max);
+        return phi;
     };
 
     this.nextPosition = function(theta) {
