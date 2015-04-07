@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Fuzzy Car</title>
+
+    <!-- Load scripts -->
+    <script src="../scripts/view/painter.js"></script>
+</head>
+<body>
+<canvas id="car-canvas" height="720" width="1280"></canvas>
+
+<script>
+    (function () {
+        var canvas = document.getElementById("car-canvas");
+        var painter = new Painter(canvas);
+        var circle = {
+            center: {x:200, y: 200},
+            radius: 128
+        };
+
+        var line;
+
+        var update = function() {
+            var center = circle.center;
+            center.x += 1;
+            if (center.x >= 800) {
+                center.x = 200;
+            }
+
+            line = {
+                p1: { x: center.x, y: center.y },
+                p2: { x: center.x + circle.radius * 2, y:center.y }
+            };
+        };
+
+        var draw = function() {
+            painter.addCircle(circle);
+            painter.addLine(line);
+            painter.draw();
+        };
+
+        var main = function() {
+            window.requestAnimationFrame(main);
+
+            update();
+            draw();
+        };
+
+        main();
+    })();
+
+
+</script>
+</body>
+</html>
