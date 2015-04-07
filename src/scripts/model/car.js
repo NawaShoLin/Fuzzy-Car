@@ -19,7 +19,7 @@ var Car = function(position, phi, speed, carLength) {
     };
 
     var nextY = function(theta) {
-        var unitY = osition.y +
+        var unitY = position.y +
             Math.sin(phi + theta) -
             Math.sin(theta) * Math.cos(phi);
         return speed * unitY;
