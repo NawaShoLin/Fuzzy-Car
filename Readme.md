@@ -5,6 +5,7 @@ A Simple car AI using fuzzy theory
 
 ## License (GPLv3)
 Fuzzy Car - A simple car A.I and its demo
+
 Copyright (C) 2015  Ting-Shu Lin
 
 This program is free software: you can redistribute it and/or modify
