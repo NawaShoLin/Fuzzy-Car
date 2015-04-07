@@ -28,8 +28,15 @@ var FuzzyCar = function(painter, window) {
     var car = defaultCar();
     var env = defaultEvn();
 
+    var leftSensor = new Sensor(car, env, -(Math.PI/4));
+    var centerSensor = new Sensor(car, env, 0);
+    var rightSensor = new Sensor(car, env, Math.PI/4);
+
+    var drive = Drive(leftSensor, centerSensor, rightSensor);
+
     var update = function() {
-        car.move(MathHelper.degToRad(20));
+        //car.move(MathHelper.degToRad(20));
+        car.move(drive());
     };
 
     var draw = function() {
@@ -39,7 +46,7 @@ var FuzzyCar = function(painter, window) {
     };
 
     var mainLoop = function() {
-        window.requestAnimationFrame(mainLoop);
+        window.setTimeout(mainLoop, 50);
         update();
         draw();
     };
