@@ -73,7 +73,12 @@ var Ray = function(point, rad) {
 
         var myVector = [Math.sin(rad), Math.cos(rad)];
         var toCPVector = [cPoint.x - point.x, cPoint.y - point.y];
-        return MathHelper.DotProduct(myVector, toCPVector) > 0;
+
+        if (MathHelper.DotProduct(myVector, toCPVector) > 0) {
+            return cPoint;
+        } else {
+            return null;
+        }
     } ;
 };
 
