@@ -47,10 +47,13 @@ var Line = function(startPoint, endPoint) {
 
     this.isOnLine = function(point) {
         var inRange = function(point) {
-            var x_max = Math.max(startPoint.x, endPoint.x);
-            var x_min = Math.min(startPoint.x, endPoint.x);
-            var y_max = Math.max(startPoint.y, endPoint.y);
-            var y_min = Math.min(startPoint.y, endPoint.y);
+            var ALLOWED_ERR = 1e-6;
+
+            var x_max = Math.max(startPoint.x, endPoint.x) + ALLOWED_ERR;
+            var y_max = Math.max(startPoint.y, endPoint.y) + ALLOWED_ERR;
+
+            var x_min = Math.min(startPoint.x, endPoint.x) - ALLOWED_ERR;
+            var y_min = Math.min(startPoint.y, endPoint.y) - ALLOWED_ERR;
 
             var inX = x_min <= point.x && point.x <= x_max;
             var inY = y_min <= point.y && point.y <= y_max;
@@ -67,9 +70,12 @@ var Ray = function(point, rad) {
 
     this.crossoverPoint = function(otherLine) {
         var cPoint = myEquation.crossoverPoint(otherLine.equation);
+
+
         if (!cPoint || !otherLine.isOnLine(cPoint)) {
             return null;
         }
+
 
         var myVector = [Math.cos(rad), Math.sin(rad)];
         var toCPVector = [cPoint.x - point.x, cPoint.y - point.y];
