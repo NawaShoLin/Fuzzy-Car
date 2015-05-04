@@ -7,6 +7,7 @@ var Painter = (function () {
 
         this.lines = [];
         this.circles = [];
+        this.messages = [];
 
         this.defaultLineWidth = 1;
         this.defaultStrokeStyle = "black";
@@ -19,6 +20,10 @@ var Painter = (function () {
 
     Painter.prototype.addCircle = function(circle) {
         this.circles.push(circle);
+    };
+
+    Painter.prototype.addMessage = function(msg) {
+        this.messages.push(msg);
     };
 
     Painter.prototype.draw = function() {
@@ -34,6 +39,8 @@ var Painter = (function () {
 
         this._drawCircles();
         this.circles = [];
+
+        this._drawMessages();
     };
 
 
@@ -83,6 +90,18 @@ var Painter = (function () {
             var c = circles[i];
             this._drawCircle(c.center, c.radius, c.lineWidth, c.strokeStyle);
         }
+    };
+
+    Painter.prototype._drawMessages = function() {
+        var fontSize = 25;
+        for (var i = 0; i < this.messages.length; i += 1) {
+            var ctx  = this.context;
+            ctx.save();
+            ctx.font = "" + fontSize + "px Arial";
+            ctx.fillText(this.messages[i], 20, (fontSize + 4) * (i + 1));
+            ctx.restore();
+        }
+        this.messages = [];
     };
 
     Painter.prototype.Height = function() {

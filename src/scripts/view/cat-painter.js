@@ -51,6 +51,10 @@ var CatPainter = function(canvas) {
         addLine(frontLine);
     };
 
+    this.addMessage = function(msg) {
+        lowLayerPainter.addMessage(msg);
+    };
+
     this.draw = function() {
         lowLayerPainter.draw();
     };
