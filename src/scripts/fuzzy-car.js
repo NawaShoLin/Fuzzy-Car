@@ -1,9 +1,11 @@
+var log = function(msg) {
+    console.log(msg);
+};
+
 var FuzzyCar = function(car, env, painter, historyMod) {
     var leftSensor = new Sensor(car, env, -(Math.PI/4));
     var centerSensor = new Sensor(car, env, 0);
     var rightSensor = new Sensor(car, env, Math.PI/4);
-
-    var drive = Drive(leftSensor, centerSensor, rightSensor);
 
     historyMod = historyMod || false;
     var historyCars = [];
@@ -24,15 +26,32 @@ var FuzzyCar = function(car, env, painter, historyMod) {
     };
 
     var update = function() {
+        var updateSensorLines = function () {
+            frontLine = centerSensor.getSenceLine();
+            leftLine = leftSensor.getSenceLine();
+            rightLine = rightSensor.getSenceLine();
+        };
+
+        var moveCar = function() {
+            var leftDist = leftSensor.distToBar();
+            var centerDist = centerSensor.distToBar();
+            var rightDist = rightSensor.distToBar();
+            var nextTheta = Drive(leftDist, centerDist, rightDist);
+
+            car.move(nextTheta);
+
+            log("Theta: " + nextTheta);
+            log("L/C/R: " + leftDist + ", " + centerDist + ", " + rightDist);
+        };
+
+
         if (checkSuccess()) {
             success = true;
         } else {
             historyCars.push(car.clone());
-            car.move(drive());
 
-            frontLine = centerSensor.getSenceLine();
-            leftLine = leftSensor.getSenceLine();
-            rightLine = rightSensor.getSenceLine();
+            moveCar();
+            updateSensorLines();
         }
     };
 

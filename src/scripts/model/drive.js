@@ -1,4 +1,4 @@
-var Drive = function(leftSensor, centerSensor, rightSensor) {
+var Drive = function(leftDist, centerDist, rightDist) {
 
     var nearDie = function(centerDist) {
         var dangerousDist = 6;
@@ -14,20 +14,16 @@ var Drive = function(leftSensor, centerSensor, rightSensor) {
         return v > 1? 1 : v;
     };
 
-    var nextTheta = function() {
-        var left = leftSensor.distToBar();
-        var center = centerSensor.distToBar();
-        var right = rightSensor.distToBar();
-
-        var dying = nearDie(center);
-        var enoughLeft = enoughSpace(left);
-        var enoughRight = enoughSpace(right);
+    var nextTheta = function(leftDist, centerDist, rightDist) {
+        var dying = nearDie(centerDist);
+        var enoughLeft = enoughSpace(leftDist);
+        var enoughRight = enoughSpace(rightDist);
 
         var maxRad = MathHelper.degToRad(40);
-        var trunV =(enoughLeft - enoughRight);
+        var turnV =(enoughLeft - enoughRight);
 
-        return maxRad * (trunV + trunV * dying);
+        return maxRad * (turnV + turnV * dying);
     };
 
-    return nextTheta;
+    return nextTheta(leftDist, centerDist, rightDist);
 };
