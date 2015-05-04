@@ -25,6 +25,11 @@ var CatPainter = function(canvas) {
         lowLayerPainter.addCircle(fixedCircle);
     };
 
+    this.addSencorLine = function(gline) {
+        var line = { p1: gline.startPoint, p2: gline.endPoint };
+        addLine(line);
+    };
+
     this.addWall = function(wall) {
         var line = { p1: wall.startPoint, p2: wall.endPoint };
         addLine(line);

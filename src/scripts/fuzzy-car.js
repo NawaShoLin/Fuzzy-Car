@@ -8,6 +8,9 @@ var FuzzyCar = function(car, env, painter, historyMod) {
     historyMod = historyMod || false;
     var historyCars = [];
 
+    var frontLine;
+    var leftLine, rightLine;
+
     var drawHistoryCars = function() {
         historyCars.forEach(function(h_car){
             painter.addCar(h_car);
@@ -26,12 +29,19 @@ var FuzzyCar = function(car, env, painter, historyMod) {
         } else {
             historyCars.push(car.clone());
             car.move(drive());
+
+            frontLine = centerSensor.getSenceLine();
+            leftLine = leftSensor.getSenceLine();
+            rightLine = rightSensor.getSenceLine();
         }
     };
 
     var draw = function() {
         painter.addEnv(env);
         painter.addCar(car);
+        painter.addSencorLine(frontLine);
+        painter.addSencorLine(leftLine);
+        painter.addSencorLine(rightLine);
 
         if (historyMod) {
             drawHistoryCars();
