@@ -118,5 +118,10 @@ var MathHelper = (function() {
         return Math.sqrt(x_diff * x_diff + y_diff * y_diff);
     };
 
+    MathHelper.IntRand = function(min, max) {
+        var range = max - min + 1;
+        return Math.floor((Math.random() * range) + min);
+    };
+
     return MathHelper;
 })();
