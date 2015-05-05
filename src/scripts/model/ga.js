@@ -58,7 +58,11 @@ var GA = function(funs, params) {
         return cats.map(scoreFun);
     };
 
-    var goodEnouge = function(scores) {
+    var goodEnough = function(scores) {
+        if (typeof(endingScore) === 'undefined' || endingScore === null) {
+            return false;
+        }
+
         var best = Math.max.apply(null, scores);
         return best >= endingScore;
     };
@@ -71,7 +75,7 @@ var GA = function(funs, params) {
             cats = cats.concat(crossover(cats, scores));
             cats = cats.concat(mutate(cats));
 
-            if (goodEnouge(scores)) {
+            if (goodEnough(scores)) {
                 break;
             }
         }
