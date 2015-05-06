@@ -1,6 +1,6 @@
 var GA = function(funs, params) {
-    var scoreFun, selectFun, crossoverFun, mutationFun;
-    var populationSize, maxIteration, mutationRate, crossoverRate, codeRanges, endingScore;
+    var scoreFun, selectFun, crossoverFun, mutationFun, logFun;
+    var populationSize, maxIteration, mutationRate, crossoverRate, codeRanges, endingScore, logFrequency;
 
     var init = function() {
         populationSize = params.populationSize;
@@ -9,11 +9,13 @@ var GA = function(funs, params) {
         crossoverRate = params.crossoverRate;
         codeRanges = params.codeRanges;
         endingScore = params.endingScore;
+        logFrequency = params.logFrequency;
 
         scoreFun = funs.scoreFun;
         selectFun = funs.selectFun;
         crossoverFun = funs.crossoverFun;
         mutationFun = funs.mutationFun;
+        logFun = funs.logFun;
     };
 
     var checkEssentials = function () {
@@ -58,26 +60,52 @@ var GA = function(funs, params) {
         return cats.map(scoreFun);
     };
 
-    var goodEnough = function(scores) {
+    var bestOfScore = function(scores) {
+        return Math.max.apply(null, scores);
+    };
+
+    var goodEnough = function(score) {
         if (typeof(endingScore) === 'undefined' || endingScore === null) {
             return false;
+        } else {
+            return score >= endingScore;
         }
+    };
 
-        var best = Math.max.apply(null, scores);
-        return best >= endingScore;
+    var log = function(bestScore, iteration) {
+        logFun({bestScore: bestScore, iteration: iteration});
+    };
+
+    var normalLog = function(bestScore, iteration) {
+        if (logFun && logFrequency && (iteration % logFrequency === 0)) {
+            log(bestScore, iteration);
+        }
+    };
+
+    var endingLog = function(bestScore, iteration) {
+        if (logFun) {
+            iteration = min(iteration, maxIteration);
+            log(bestScore, iteration);
+        }
     };
 
     return function(cats) {
-        var scores;
-        for (var i = 0; i < maxIteration; i++) {
+        var scores, bestScore, i;
+        for (i = 0; i < maxIteration; i++) {
             scores = computeScores(cats);
             cats = selectFun(cats, scores, populationSize);
             cats = cats.concat(crossover(cats, scores));
             cats = cats.concat(mutate(cats));
 
-            if (goodEnough(scores)) {
+            bestScore = bestOfScore(scores);
+            normalLog(bestScore, i);
+
+            if (goodEnough(bestScore)) {
                 break;
             }
         }
+
+        endingLog();
+        return cats;
     };
 };
