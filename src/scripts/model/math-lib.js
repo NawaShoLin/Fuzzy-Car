@@ -123,5 +123,10 @@ var MathHelper = (function() {
         return Math.floor((Math.random() * range) + min);
     };
 
+    MathHelper.floatRand = function(min, max) {
+        var range = max - min;
+        return Math.random() * range + min;
+    };
+
     return MathHelper;
 })();
