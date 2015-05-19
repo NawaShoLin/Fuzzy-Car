@@ -15,7 +15,7 @@ var NNDriver = function(xfuns, ms, sigmas, weights) {
 
         // s = (|x - m| ^ 2)
         var s = 0;
-        for (var i = 0; i < x.length; x += 1) {
+        for (var i = 0; i < x.length; i += 1) {
             var diff = x[i] - m[i];
             s += diff * diff;
         }
@@ -28,8 +28,9 @@ var NNDriver = function(xfuns, ms, sigmas, weights) {
         // x is a vector : (x1, x2, ... ,xp)
         // args to f is sensor inputs
         var x = [];
+        var args = arguments;
         xfuns.forEach(function(xfun) {
-            x.push(xfun.apply(null, arguments));
+            x.push(xfun.apply(null, args));
         });
 
         var sum = 0;

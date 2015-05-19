@@ -12,7 +12,7 @@ var GaForNn = function(testcases) {
     var numOfNeural = 2;
     var numOfInput = xfuns.length;
     var mRange = 16;
-    var sigmaRange = 1;
+    var sigmaRange = 20;
     var weightRange = 40;
 
     var mStartIndex = 0;
@@ -156,10 +156,11 @@ var GaForNn = function(testcases) {
 
         var F = NNDriver(xfuns, ms, sigmas, weights);
         var errorSum = 0;
+        var thetaRange = Math.abs(MathHelper.degToRad(40) - MathHelper.degToRad(-40));
         testcases.forEach(function(testcase) {
             var val = F(testcase.left, testcase.center, testcase.right);
-            var expected = testcase.expected;
-            errorSum += Math.abs(val - expected) / expected;
+            var expected = testcase.theta;
+            errorSum += Math.abs(val - expected);
         });
 
         var avgError = errorSum / testcases.length;
@@ -168,9 +169,9 @@ var GaForNn = function(testcases) {
 
     return ((function() {
         var log = [];
-        var logFun = function(best, i) {
-            var t = {bestscore: best, iteration: i};
-            log.push(t);
+        var logFun = function(info) {
+            console.log('best:' + info.bestScore + ' - it:' + info.iteration);
+            log.push(info);
         };
 
         var funs = {
@@ -193,7 +194,8 @@ var GaForNn = function(testcases) {
         };
 
         var ga = GA(funs, params);
-        ga(randCats(800));
+        var initCats = randCats(800);
+        ga(initCats);
         return log;
     })());
 };

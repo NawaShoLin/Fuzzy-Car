@@ -13,6 +13,8 @@ var FuzzyCar = function(car, env, painter, historyMod) {
     var frontLine;
     var leftLine, rightLine;
 
+    var tDatas = []
+
     var drawHistoryCars = function() {
         historyCars.forEach(function(h_car){
             painter.addCar(h_car);
@@ -39,6 +41,13 @@ var FuzzyCar = function(car, env, painter, historyMod) {
             var nextTheta = Drive(leftDist, centerDist, rightDist);
 
             car.move(nextTheta);
+
+            tDatas.push({
+                theta: nextTheta,
+                left: leftDist,
+                center: centerDist,
+                right: rightDist
+            });
 
             log("Theta: " + nextTheta);
             log("L/C/R: " + leftDist + ", " + centerDist + ", " + rightDist);
@@ -68,6 +77,7 @@ var FuzzyCar = function(car, env, painter, historyMod) {
 
         if (success) {
             painter.addMessage("Success!");
+            runGA();
         }
 
         painter.draw();
@@ -77,6 +87,10 @@ var FuzzyCar = function(car, env, painter, historyMod) {
         window.setTimeout(mainLoop, 50);
         update();
         draw();
+    };
+
+    var runGA = function() {
+        var ga = GaForNn(tDatas);
     };
 
     this.run = function() {
