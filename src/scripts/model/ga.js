@@ -89,13 +89,30 @@ var GA = function(funs, params) {
         }
     };
 
+    var fixToRange = function(cats) {
+        cats.forEach(function(gene) {
+            for (var i = 0; i < gene.length; i += 1) {
+                if (gene[i] < codeRanges[i][0]) {
+                    gene[i] = codeRanges[i][0];
+                } else if (gene[i] > codeRanges[i][1]) {
+                    gene[i] = codeRanges[i][1];
+                }
+            }
+        });
+        return cats;
+    };
+
     return function(cats) {
         var scores, bestScore, i;
         for (i = 0; i < maxIteration; i++) {
             scores = computeScores(cats);
             cats = selectFun(cats, scores, populationSize);
-            cats = cats.concat(crossover(cats, scores));
-            cats = cats.concat(mutate(cats));
+
+            var crossoverChildren = fixToRange(crossover(cats, scores));
+            cats = cats.concat(crossoverChildren);
+
+            var mutated = fixToRange(mutate(cats));
+            cats = cats.concat(mutated);
 
             bestScore = bestOfScore(scores);
             normalLog(bestScore, i);

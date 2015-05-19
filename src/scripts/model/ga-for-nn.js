@@ -167,6 +167,26 @@ var GaForNn = function(testcases) {
         return 1 / avgError;
     };
 
+    var codeRanges = (function() {
+        var mRanges = [];
+        var i;
+        for (i = 0; i < sigmaStartIndex; i += 1) {
+            mRanges.push([-mRange, mRange]);
+        }
+
+        var sigmaRanges = [];
+        for (i = 0; i < numOfInput; i += 1) {
+            sigmaRanges.push([-sigmaRange, sigmaRange]);
+        }
+
+        var weightRanges = [];
+        for (i = 0; i < numOfInput; i += 1) {
+            weightRanges.push([-weightRange, weightRange]);
+        }
+
+        return mRanges.concat(sigmaRanges).concat(weightRanges);
+    })();
+
     return ((function() {
         var log = [];
         var logFun = function(info) {
@@ -187,8 +207,7 @@ var GaForNn = function(testcases) {
             maxIteration: 1000,
             mutationRate: 0.1,
             crossoverRate: 0.2,
-            // TODO: code-range
-            codeRanges: 1,
+            codeRanges: codeRanges,
             endingScore: (1 / 0.05),
             logFrequency: 10
         };
