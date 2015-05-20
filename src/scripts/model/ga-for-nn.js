@@ -1,4 +1,5 @@
-var GaForNn = function(testcases) {
+var GaForNn = function(trainingDatas) {
+    'use strict';
 
     var xfuns = [
         function(left, center, right) {
@@ -156,14 +157,14 @@ var GaForNn = function(testcases) {
 
         var F = NNDriver(xfuns, ms, sigmas, weights);
         var errorSum = 0;
-        var thetaRange = Math.abs(MathHelper.degToRad(40) - MathHelper.degToRad(-40));
-        testcases.forEach(function(testcase) {
-            var val = F(testcase.left, testcase.center, testcase.right);
-            var expected = testcase.theta;
+
+        trainingDatas.forEach(function(data) {
+            var val = F(data.left, data.center, data.right);
+            var expected = data.theta;
             errorSum += Math.abs(val - expected);
         });
 
-        var avgError = errorSum / testcases.length;
+        var avgError = errorSum / trainingDatas.length;
         return 1 / avgError;
     };
 
@@ -214,7 +215,7 @@ var GaForNn = function(testcases) {
 
         var ga = GA(funs, params);
         var initCats = randCats(800);
-        ga(initCats);
-        return log;
+
+        return ga(initCats);
     })());
 };

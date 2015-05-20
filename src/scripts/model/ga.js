@@ -1,4 +1,6 @@
 var GA = function(funs, params) {
+    'use strict';
+
     var scoreFun, selectFun, crossoverFun, mutationFun, logFun;
     var populationSize, maxIteration, mutationRate, crossoverRate, codeRanges, endingScore, logFrequency;
 
@@ -84,7 +86,7 @@ var GA = function(funs, params) {
 
     var endingLog = function(bestScore, iteration) {
         if (logFun) {
-            iteration = min(iteration, maxIteration);
+            iteration = Math.min(iteration, maxIteration);
             log(bestScore, iteration);
         }
     };
@@ -103,9 +105,10 @@ var GA = function(funs, params) {
     };
 
     return function(cats) {
-        var scores, bestScore, i;
+        var scores, bestScore, i, logCats;
         for (i = 0; i < maxIteration; i++) {
             scores = computeScores(cats);
+            logCats = cats;
             cats = selectFun(cats, scores, populationSize);
 
             var crossoverChildren = fixToRange(crossover(cats, scores));
@@ -122,7 +125,7 @@ var GA = function(funs, params) {
             }
         }
 
-        endingLog();
-        return cats;
+        endingLog(bestScore, i);
+        return {cats: logCats, scores:scores};
     };
 };

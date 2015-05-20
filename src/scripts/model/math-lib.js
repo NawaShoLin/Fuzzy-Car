@@ -1,10 +1,12 @@
 var Equation2D = function(p1, p2) {
+    'use strict';
+
     // equation: ax + by = c
 
     var xDiff = p1.x - p2.x;
-    var ydiff = p1.y - p2.y;
+    var yDiff = p1.y - p2.y;
 
-    this.a = ydiff;
+    this.a = yDiff;
     this.b = -xDiff;
     this.c = this.a * p1.x + this.b * p1.y;
 
@@ -41,6 +43,8 @@ var Equation2D = function(p1, p2) {
 };
 
 var Line = function(startPoint, endPoint) {
+    'use strict';
+
     this.startPoint = startPoint;
     this.endPoint = endPoint;
     this.equation = new Equation2D(startPoint, endPoint);

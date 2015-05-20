@@ -1,8 +1,6 @@
-var log = function(msg) {
-    console.log(msg);
-};
-
 var AutoCar = function(car, env, painter, driveFun, logger, options) {
+    'use strict';
+
     var leftSensor = new Sensor(car, env, -(Math.PI/4));
     var centerSensor = new Sensor(car, env, 0);
     var rightSensor = new Sensor(car, env, Math.PI/4);
@@ -49,9 +47,6 @@ var AutoCar = function(car, env, painter, driveFun, logger, options) {
                 center: centerDist,
                 right: rightDist
             });
-
-            log("Theta: " + nextTheta);
-            log("L/C/R: " + leftDist + ", " + centerDist + ", " + rightDist);
         };
 
 

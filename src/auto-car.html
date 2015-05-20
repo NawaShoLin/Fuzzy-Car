@@ -53,7 +53,9 @@
 
     var canvas = document.getElementById("car-canvas");
     var painter = new CatPainter(canvas);
-    var app = new AutoCar(defaultCar(), defaultEvn(), painter, Drive, {path:[]}, {historyMod:true});
+
+    var logger = {log: function() {}, path:[]};
+    var app = new AutoCar(defaultCar(), defaultEvn(), painter, Drive, logger, {historyMod:true});
     app.run();
 </script>
 </body>
