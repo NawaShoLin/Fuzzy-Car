@@ -1,4 +1,6 @@
 var Car = function(position, phi, speed, carLength) {
+    'use strict';
+
     var defaults = {
         phi: MathHelper.degToRad(90),
         speed: 1,

@@ -1,4 +1,6 @@
 var CatPainter = function(canvas) {
+    'use strict';
+
     var lowLayerPainter = new Painter(canvas);
     var scale = 10;
     var blank = 100;

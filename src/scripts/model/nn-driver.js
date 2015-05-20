@@ -1,4 +1,6 @@
 var NNDriver = function(xfuns, ms, sigmas, weights) {
+    'use strict';
+
     if (!(ms.length == sigmas.length &&
         sigmas.length == weights.length)) {
         throw "Arguments do not match.";

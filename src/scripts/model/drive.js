@@ -1,4 +1,5 @@
 var Drive = function(leftDist, centerDist, rightDist) {
+    'use strict';
 
     var nearDie = function(centerDist) {
         var dangerousDist = 6;

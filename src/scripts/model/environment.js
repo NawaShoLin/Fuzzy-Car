@@ -1,4 +1,6 @@
 var Environment = function(walls, endY) {
+    'use strict';
+
     this.walls = walls || [];
     this.endY = endY;
 

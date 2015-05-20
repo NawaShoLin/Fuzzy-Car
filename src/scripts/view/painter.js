@@ -1,4 +1,5 @@
 var Painter = (function () {
+    'use strict';
 
     /** @constructor */
     var Painter = function(canvas) {

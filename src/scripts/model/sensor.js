@@ -2,6 +2,8 @@
  * @return {number} - distance to closest bar, null if not found
  */
 var senseEnv = function(pos, phi, env) {
+    'use strict';
+
     var ray = new Ray(pos, phi);
 
     var cPoints; // crossover points
@@ -34,6 +36,8 @@ var senseEnv = function(pos, phi, env) {
  * @param {number} alpha - the radian between sensor and car front
  */
 var Sensor = function(car, env, alpha) {
+    'use strict';
+
     var self = this;
 
     /**
