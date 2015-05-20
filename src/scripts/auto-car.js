@@ -2,18 +2,18 @@ var log = function(msg) {
     console.log(msg);
 };
 
-var FuzzyCar = function(car, env, painter, historyMod) {
+var AutoCar = function(car, env, painter, driveFun, logger, options) {
     var leftSensor = new Sensor(car, env, -(Math.PI/4));
     var centerSensor = new Sensor(car, env, 0);
     var rightSensor = new Sensor(car, env, Math.PI/4);
 
-    historyMod = historyMod || false;
+    options = options || {};
+    var historyMod = options.historyMod || false;
     var historyCars = [];
+    var timePerClock = options.fps ? (1000 / options.fps) : (1000 / 30);
 
     var frontLine;
     var leftLine, rightLine;
-
-    var tDatas = []
 
     var drawHistoryCars = function() {
         historyCars.forEach(function(h_car){
@@ -22,6 +22,7 @@ var FuzzyCar = function(car, env, painter, historyMod) {
     };
 
     var success = false;
+    var endFlag = false;
 
     var checkSuccess = function() {
         return car.position().y >= env.endY;
@@ -42,7 +43,7 @@ var FuzzyCar = function(car, env, painter, historyMod) {
 
             car.move(nextTheta);
 
-            tDatas.push({
+            logger.path.push({
                 theta: nextTheta,
                 left: leftDist,
                 center: centerDist,
@@ -77,23 +78,26 @@ var FuzzyCar = function(car, env, painter, historyMod) {
 
         if (success) {
             painter.addMessage("Success!");
-            runGA();
+            endFlag = true;
         }
 
         painter.draw();
     };
 
     var mainLoop = function() {
-        window.setTimeout(mainLoop, 50);
         update();
         draw();
-    };
 
-    var runGA = function() {
-        var ga = GaForNn(tDatas);
+        if (!endFlag) {
+            window.setTimeout(mainLoop, timePerClock);
+        }
     };
 
     this.run = function() {
         mainLoop();
+    };
+
+    this.ended = function() {
+        return endFlag;
     };
 };
