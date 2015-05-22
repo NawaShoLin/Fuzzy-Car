@@ -1,5 +1,7 @@
-var GaForNn = function(trainingData) {
+var GaForNn = function(trainingData, options) {
     'use strict';
+
+    options = options || {};
 
     var xfuns = [
         function(left, center, right) {
@@ -222,26 +224,35 @@ var GaForNn = function(trainingData) {
             log.push(info);
         };
 
+        var selectionFuns = {
+            'roulette-wheel': rouletteWheel,
+            'tournament': tournament
+        };
+
         var funs = {
             scoreFun: score,
-            selectFun: rouletteWheel,
+            selectFun: selectionFuns[options.selection] || rouletteWheel,
             crossoverFun: crossover,
             mutationFun: mutate,
             logFun: logFun
         };
 
+
+        var p = options['p'] || 10000;
+        var initP = options['init-p'] || p * 0.8;
+
         var params = {
-            populationSize: 1000,
-            maxIteration: 1000,
-            mutationRate: 0.1,
-            crossoverRate: 0.2,
+            populationSize: p,
+            maxIteration: options['max-it'] || 100,
+            mutationRate: options['pm'] || 0.1,
+            crossoverRate: options['pc'] || 0.2,
             codeRanges: codeRanges,
             endingScore: (1 / 0.05),
-            logFrequency: 10
+            logFrequency: options['log-freq'] || 10
         };
 
         var ga = GA(funs, params);
-        var initCats = randCats(800);
+        var initCats = randCats(initP);
 
         return ga(initCats);
     })());
