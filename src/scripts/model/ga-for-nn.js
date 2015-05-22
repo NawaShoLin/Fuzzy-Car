@@ -1,4 +1,4 @@
-var GaForNn = function(trainingDatas) {
+var GaForNn = function(trainingData) {
     'use strict';
 
     var xfuns = [
@@ -76,6 +76,7 @@ var GaForNn = function(trainingDatas) {
         });
     };
 
+
     var rouletteWheel = function(cats, scores, populationSize) {
         if (cats.length != scores.length) {
             throw 'Number of chromosomes not match';
@@ -96,6 +97,32 @@ var GaForNn = function(trainingDatas) {
 
         return selected;
     };
+
+    var tournament = function(cats, scores, populationSize) {
+        if (cats.length != scores.length) {
+            throw 'Number of chromosomes not match';
+        }
+
+        var endIndex = populationSize - 1;
+        var randIndex = function() {
+            return MathHelper.IntRand(0, endIndex);
+        };
+
+        var selectOne = function() {
+            var i1 = randIndex();
+            var i2 = randIndex();
+
+            return (scores[i1] > scores[i2])? cats[i1] : cats[i2];
+        };
+
+        var selected = [];
+        for (var i = 0; i < populationSize; i += 1) {
+            selected.push(selectOne());
+        }
+
+        return selected;
+    };
+
 
     var randInRange = function(range) {
         return MathHelper.floatRand(-range, range);
@@ -158,13 +185,13 @@ var GaForNn = function(trainingDatas) {
         var F = NNDriver(xfuns, ms, sigmas, weights);
         var errorSum = 0;
 
-        trainingDatas.forEach(function(data) {
-            var val = F(data.left, data.center, data.right);
-            var expected = data.theta;
+        trainingData.forEach(function(datum) {
+            var val = F(datum.left, datum.center, datum.right);
+            var expected = datum.theta;
             errorSum += Math.abs(val - expected);
         });
 
-        var avgError = errorSum / trainingDatas.length;
+        var avgError = errorSum / trainingData.length;
         return 1 / avgError;
     };
 
