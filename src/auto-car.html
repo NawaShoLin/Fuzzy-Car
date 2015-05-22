@@ -20,9 +20,31 @@
 
     <script src="scripts/auto-car.js"></script>
 
+    <style>
+        #ga-msg-div{
+            overflow: scroll;
+            height: 200px;
+        }
+    </style>
 </head>
 <body>
-<canvas id="car-canvas" width="600" height="600"></canvas>
+<div id="fuzzy-demo">
+    <button onclick="fuzzyCarDemo()">Run Fuzzy Car demo</button>
+    <canvas id="fuzzy-car-canvas" width="600" height="600"></canvas>
+</div>
+
+<div id="ga-demo">
+    <div id="ga-msg-div">
+        <table id="ga-msg-table">
+            <tr>
+                <td>Iteration</td>
+                <td>Fitness</td>
+            </tr>
+        </table>
+    </div>
+    <button onclick="gaDemo()">Run GA demo</button>
+</div>
+
 
 <script>
     var defaultCar = function() {
@@ -51,12 +73,46 @@
         return env;
     };
 
-    var canvas = document.getElementById("car-canvas");
+    var canvas = document.getElementById("fuzzy-car-canvas");
     var painter = new CatPainter(canvas);
 
-    var logger = {log: function() {}, path:[]};
-    var app = new AutoCar(defaultCar(), defaultEvn(), painter, Drive, logger, {historyMod:true});
-    app.run();
+    var fuzzyCarLogger = {log: function() {}, path:[]};
+    var fuzzyCarDemo = function() {
+        var app = new AutoCar(defaultCar(), defaultEvn(), painter, Drive, fuzzyCarLogger, {historyMod: true});
+        app.run();
+    };
+
+    var gaLogTable = document.getElementById('ga-msg-table');
+    var gaOptions = {
+        'p': 100,
+        'initP': 80,
+        'max-it':10000,
+        'pm': 0.2,
+        'pc': 0.1,
+        'log-freq': 1,
+        'logFun': function(info) {
+            console.log('it: ' + info.iteration+ ', fit: ' + info.bestScore);
+
+            var row = document.createElement('tr');
+            var cell1 = document.createElement('td');
+            var cell2 = document.createElement('td');
+
+            cell1.innerHTML = '' + info.iteration;
+            cell2.innerHTML = '' + info.bestScore;
+
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            gaLogTable.appendChild(row);
+            console.log(gaLogTable.children.length);
+        }
+    };
+
+    var gaResult;
+    var gaDemo = function() {
+        gaResult = GaForNn(fuzzyCarLogger.path, gaOptions);
+    };
+
+
 </script>
 </body>
 </html>

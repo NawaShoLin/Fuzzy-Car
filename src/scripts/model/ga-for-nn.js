@@ -219,7 +219,7 @@ var GaForNn = function(trainingData, options) {
 
     return ((function() {
         var log = [];
-        var logFun = function(info) {
+        var logFun = options.logFun || function(info) {
             console.log('best:' + info.bestScore + ' - it:' + info.iteration);
             log.push(info);
         };

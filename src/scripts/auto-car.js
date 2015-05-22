@@ -91,8 +91,4 @@ var AutoCar = function(car, env, painter, driveFun, logger, options) {
     this.run = function() {
         mainLoop();
     };
-
-    this.ended = function() {
-        return endFlag;
-    };
 };
