@@ -105,7 +105,7 @@ var GaForNn = function(trainingData, options) {
             throw 'Number of chromosomes not match';
         }
 
-        var endIndex = populationSize - 1;
+        var endIndex = cats.length - 1;
         var randIndex = function() {
             return MathHelper.IntRand(0, endIndex);
         };
@@ -156,30 +156,30 @@ var GaForNn = function(trainingData, options) {
     };
 
 
-    var score = function(gene) {
-        var msFromGene = function(gene) {
-            var ms = [];
-            var gIndex = 0;
-            for (var i = 0; i < numOfNeural; i += 1) {
-                var m = [];
-                for (var j = 0; j < numOfInput; j += 1) {
-                    gIndex += 1;
-                    m.push(gene[gIndex]);
-                }
-                ms.push(m);
+    var msFromGene = function(gene) {
+        var ms = [];
+        var gIndex = 0;
+        for (var i = 0; i < numOfNeural; i += 1) {
+            var m = [];
+            for (var j = 0; j < numOfInput; j += 1) {
+                gIndex += 1;
+                m.push(gene[gIndex]);
             }
+            ms.push(m);
+        }
 
-            return ms;
-        };
+        return ms;
+    };
 
-        var sigmasFromGene = function(gene) {
-            return gene.slice(sigmaStartIndex, weightStartIndex);
-        };
+    var sigmasFromGene = function(gene) {
+        return gene.slice(sigmaStartIndex, weightStartIndex);
+    };
 
-        var weightsFromGene = function(gene) {
-            return gene.slice(weightStartIndex);
-        };
+    var weightsFromGene = function(gene) {
+        return gene.slice(weightStartIndex);
+    };
 
+    var score = function(gene) {
         var ms = msFromGene(gene);
         var sigmas = sigmasFromGene(gene);
         var weights = weightsFromGene(gene);
@@ -254,6 +254,11 @@ var GaForNn = function(trainingData, options) {
         var ga = GA(funs, params);
         var initCats = randCats(initP);
 
-        return ga(initCats);
+        var bestCat = ga(initCats);
+        return {
+            ms: msFromGene(bestCat),
+            sigmas: sigmasFromGene(bestCat),
+            weights: weightsFromGene(bestCat)
+        };
     })());
 };

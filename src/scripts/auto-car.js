@@ -37,7 +37,7 @@ var AutoCar = function(car, env, painter, driveFun, logger, options) {
             var leftDist = leftSensor.distToBar();
             var centerDist = centerSensor.distToBar();
             var rightDist = rightSensor.distToBar();
-            var nextTheta = Drive(leftDist, centerDist, rightDist);
+            var nextTheta = driveFun(leftDist, centerDist, rightDist);
 
             car.move(nextTheta);
 

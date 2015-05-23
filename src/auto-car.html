@@ -28,13 +28,39 @@
     </style>
 </head>
 <body>
+<h2>Fuzzy Demo</h2>
 <div id="fuzzy-demo">
-    <button onclick="fuzzyCarDemo()">Run Fuzzy Car demo</button>
+    <button onclick="fuzzyCarDemo()">Run Fuzzy Car demo</button><br>
     <canvas id="fuzzy-car-canvas" width="600" height="600"></canvas>
 </div>
 
+<h2>GADemo</h2>
 <div id="ga-demo">
+    <label for="ga-p">Population Size</label>
+    <input type="number" name="p" id="ga-p" value="10000"><br>
+
+    <label for="ga-init-p">Initial Population Size</label>
+    <input type="number" name="init-p" id="ga-init-p" value="8000"><br>
+
+    <label for="ga-pm">Probability of Mutation</label>
+    <input type="number" name="pm" id="ga-pm" value="0.2"><br>
+
+    <label for="ga-pc">Probability of Performing Crossover</label>
+    <input type="number" name="pc" id="ga-pc" value="0.1"><br>
+
+    <label for="ga-mit">Max Iteration</label>
+    <input type="number" name="mit" id="ga-mit" value="100"><br>
+
+    selection:
+    <label>Roulette Wheel</label>
+    <input name="selection" type="radio" id="ga-roulette-wheel" checked="checked"><br>
+
+    <label>Tournament</label>
+    <input name="selection" type="radio" id="ga-tournament"><br>
+
+    <button onclick="gaDemo()">Run GA demo</button>
     <div id="ga-msg-div">
+        <h3>GA Log</h3>
         <table id="ga-msg-table">
             <tr>
                 <td>Iteration</td>
@@ -42,9 +68,13 @@
             </tr>
         </table>
     </div>
-    <button onclick="gaDemo()">Run GA demo</button>
 </div>
 
+<h2>NN-GA Demo</h2>
+<div id="ga-nn-div">
+    <canvas id="nn-drive-canvas" width="600" height="600"></canvas><br>
+    <button onclick="nnCarDemo()">Run NN demo</button>
+</div>
 
 <script>
     var defaultCar = function() {
@@ -73,46 +103,72 @@
         return env;
     };
 
-    var canvas = document.getElementById("fuzzy-car-canvas");
-    var painter = new CatPainter(canvas);
-
     var fuzzyCarLogger = {log: function() {}, path:[]};
     var fuzzyCarDemo = function() {
+        var canvas = document.getElementById("fuzzy-car-canvas");
+        var painter = new CatPainter(canvas);
         var app = new AutoCar(defaultCar(), defaultEvn(), painter, Drive, fuzzyCarLogger, {historyMod: true});
         app.run();
     };
 
-    var gaLogTable = document.getElementById('ga-msg-table');
-    var gaOptions = {
-        'p': 100,
-        'initP': 80,
-        'max-it':10000,
-        'pm': 0.2,
-        'pc': 0.1,
-        'log-freq': 1,
-        'logFun': function(info) {
-            console.log('it: ' + info.iteration+ ', fit: ' + info.bestScore);
-
-            var row = document.createElement('tr');
-            var cell1 = document.createElement('td');
-            var cell2 = document.createElement('td');
-
-            cell1.innerHTML = '' + info.iteration;
-            cell2.innerHTML = '' + info.bestScore;
-
-            row.appendChild(cell1);
-            row.appendChild(cell2);
-            gaLogTable.appendChild(row);
-            console.log(gaLogTable.children.length);
-        }
-    };
-
     var gaResult;
     var gaDemo = function() {
+        var gaLogTable = document.getElementById('ga-msg-table');
+        var gaOptions = {
+            'log-freq': 1,
+            logFun: function(info) {
+                console.log('it: ' + info.iteration+ ', fit: ' + info.bestScore);
+
+                var row = document.createElement('tr');
+                var cell1 = document.createElement('td');
+                var cell2 = document.createElement('td');
+
+                cell1.innerHTML = '' + info.iteration;
+                cell2.innerHTML = '' + info.bestScore;
+
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                gaLogTable.appendChild(row);
+            }
+        };
+
+        var getValue = function(attr) {
+            return Number(document.getElementById(attr).value);
+        };
+        gaOptions.p = getValue('ga-p');
+        gaOptions.initP = getValue('ga-init-p');
+        gaOptions.pm = getValue('ga-pm');
+        gaOptions.pc = getValue('ga-pc');
+
+        gaOptions.selection = 'roulette-wheel';
+        if (document.getElementById('ga-tournament').checked) {
+            gaOptions.selection = 'tournament';
+        }
+
+        gaOptions['max-it'] = getValue('ga-mit');
+
         gaResult = GaForNn(fuzzyCarLogger.path, gaOptions);
     };
 
+    var nnCarDemo = function() {
+        var xfuns = [
+            function(left, center, right) {
+                return left - right;
+            },
+            function(left, center, right) {
+                return center;
+            }
+        ];
 
+        var nnDriveFun = NNDriver(xfuns, gaResult.ms, gaResult.sigmas, gaResult.weights);
+        var logger = {log: function() {}, path:[]};
+
+        var canvas = document.getElementById("nn-drive-canvas");
+        var painter = new CatPainter(canvas);
+
+        var app = new AutoCar(defaultCar(), defaultEvn(), painter, nnDriveFun, logger, {historyMod: true});
+        app.run();
+    };
 </script>
 </body>
 </html>

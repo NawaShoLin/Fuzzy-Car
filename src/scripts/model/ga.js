@@ -104,6 +104,11 @@ var GA = function(funs, params) {
         return cats;
     };
 
+    var findCatByScore = function(cats, scores, score) {
+        var index = scores.indexOf(score);
+        return cats[index];
+    };
+
     return function(cats) {
         var scores, bestScore, i, logCats;
         for (i = 0; i < maxIteration; i++) {
@@ -111,7 +116,7 @@ var GA = function(funs, params) {
             logCats = cats;
             cats = selectFun(cats, scores, populationSize);
 
-            var crossoverChildren = fixToRange(crossover(cats, scores));
+            var crossoverChildren = fixToRange(crossover(cats));
             cats = cats.concat(crossoverChildren);
 
             var mutated = fixToRange(mutate(cats));
@@ -126,6 +131,6 @@ var GA = function(funs, params) {
         }
 
         endingLog(bestScore, i);
-        return {cats: logCats, scores:scores};
+        return findCatByScore(logCats, scores, bestScore);
     };
 };
