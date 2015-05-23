@@ -125,24 +125,19 @@ var GaForNn = function(trainingData, options) {
         return selected;
     };
 
-
-    var randInRange = function(range) {
-        return MathHelper.floatRand(-range, range);
-    };
-
-    var randSequence = function(range, num) {
+    var randSequence = function(min, max, num) {
         var seq = [];
         for (var i = 0; i < num; i += 1) {
-            var ele = randInRange(range);
+            var ele = MathHelper.floatRand(min, max);
             seq.push(ele);
         }
         return seq;
     };
 
     var randCat = function() {
-        var mSequnce = randSequence(mRange, numOfNeural * numOfInput);
-        var sigmas = randSequence(sigmaRange, numOfNeural);
-        var weights = randSequence(weightRange, numOfNeural);
+        var mSequnce = randSequence(-mRange, mRange, numOfNeural * numOfInput);
+        var sigmas = randSequence(0, sigmaRange, numOfNeural);
+        var weights = randSequence(-weightRange, weightRange, numOfNeural);
 
         return mSequnce.concat(sigmas).concat(weights);
     };
@@ -206,7 +201,7 @@ var GaForNn = function(trainingData, options) {
 
         var sigmaRanges = [];
         for (i = 0; i < numOfInput; i += 1) {
-            sigmaRanges.push([-sigmaRange, sigmaRange]);
+            sigmaRanges.push([0, sigmaRange]);
         }
 
         var weightRanges = [];
