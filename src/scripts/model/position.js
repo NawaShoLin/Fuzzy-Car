@@ -1,3 +1,8 @@
+/**
+ * @params {number} x
+ * @params {number} y
+ * @returns {object} An object has attr x and y
+ */
 var Position = function(x, y) {
     'use strict';
 

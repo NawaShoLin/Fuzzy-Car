@@ -1,3 +1,11 @@
+/**
+ * An auto car
+ * @constructor
+ * @param {object} [position=(0,0)] - init position of the car, a object has attr 'x' and 'y'.
+ * @param {number} [phi=PI/2] - the angle of car in radian.
+ * @param {number} [speed=1] - speed of the car.
+ * @param {number} [carLength=6] - Length of the car.
+ */
 var Car = function(position, phi, speed, carLength) {
     'use strict';
 
@@ -48,17 +56,28 @@ var Car = function(position, phi, speed, carLength) {
         return phi;
     };
 
+    /**
+     * @returns {object} The next position after move with the theta angle
+     * @param {number} theta - a angle in in radian
+     */
     this.nextPosition = function(theta) {
         theta = thresholdTheta(theta);
         return Position(nextX(theta), nextY(theta));
     };
 
+    /**
+     * @param {number} theta - a angle in in radian
+     */
     this.nextPhi = function(theta) {
         theta = thresholdTheta(theta);
         var p = phi - Math.asin(2 * Math.sin(theta) / carLength);
         return thresholdPhi(p);
     };
 
+    /**
+     * Move the car with angle theta
+     * @param {number} theta - a angle in in radian
+     */
     this.move = function(theta) {
         var nextStat = {
             pos: this.nextPosition(theta),
@@ -68,21 +87,33 @@ var Car = function(position, phi, speed, carLength) {
         phi = nextStat.phi;
     };
 
+    /**
+     * @returns {object}
+     */
     this.position = function() {
         return position;
     };
 
+    /**
+     * @returns {number}
+     */
     this.phi = function() {
         return phi;
     };
 
+    /**
+     * @returns {number}
+     */
     this.carLength = function() {
         return carLength;
     };
 
+    /**
+     * Clone this car
+     * @returns {object} the clone of this car
+     */
     this.clone = function() {
         var c_pos = Position(position.x, position.y);
-        var c_phi = phi;
-        return new Car(c_pos, c_phi, speed, carLength);
+        return new Car(c_pos, phi, speed, carLength);
     };
 };
